@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int maxFrequency(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());  // Sort the array
+        int n = nums.size();
+        vector<long long> prefix(n, 0);  // Prefix sum array
+
+        prefix[0] = nums[0];
+        for (int i = 1; i < n; i++) {
+            prefix[i] = prefix[i - 1] + nums[i];
+        }
+
+        int res = 1;
+        for (int right = 1; right < n; right++) {
+            int left = 0, low = 0, high = right;
+
+            while (low <= high) {
+                int mid = (low + high) / 2;
+                int len = right - mid + 1;
+                long long total = prefix[right] - (mid > 0 ? prefix[mid - 1] : 0);
+                long long needed = (long long)nums[right] * len;
+
+                if (needed - total <= k) {
+                    left = mid;
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
+            }
+
+            res = max(res, right - left + 1);
+        }
+
+        return res;
+    }
+};
