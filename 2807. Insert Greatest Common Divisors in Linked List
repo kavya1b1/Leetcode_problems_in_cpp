@@ -1,4 +1,3 @@
-
 #include <numeric> // for std::gcd
 
 class Solution {
