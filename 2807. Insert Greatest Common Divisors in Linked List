@@ -1,1 +1,24 @@
 
+#include <numeric> // for std::gcd
+
+class Solution {
+public:
+    ListNode* insertGreatestCommonDivisors(ListNode* head) {
+        ListNode* current = head;
+
+        while (current && current->next) {
+            int a = current->val;
+            int b = current->next->val;
+            int gcd = std::gcd(a, b);
+
+            ListNode* gcdNode = new ListNode(gcd);
+            gcdNode->next = current->next;
+            current->next = gcdNode;
+
+            // Move to the node after the inserted one
+            current = gcdNode->next;
+        }
+
+        return head;
+    }
+};
